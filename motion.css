@@ -1,0 +1,89 @@
+/* Reusable motion and interaction layer for the salon template. */
+html { scroll-padding-top: 132px; }
+.scroll-progress { position: fixed; inset: 0 0 auto; height: 3px; background: var(--orange); transform: scaleX(0); transform-origin: left; z-index: 60; pointer-events: none; }
+.header { position: sticky; top: 0; z-index: 30; background: #f8f6eff0; backdrop-filter: blur(16px); transition: box-shadow .3s, background .3s; }
+.header.is-scrolled { box-shadow: 0 12px 30px -18px #263e3340; background: #f8f6effa; }
+.header nav a { position: relative; }
+.header nav a::after { content: ''; position: absolute; height: 1px; left: 0; right: 0; bottom: -7px; background: var(--green); transform: scaleX(0); transform-origin: left; transition: transform .3s; }
+.header nav a:hover::after, .header nav a[aria-current="location"]::after { transform: scaleX(1); }
+.service-ribbon { position: relative; }
+.service-ribbon .ribbon-track { min-width: 0; width: max-content; gap: 0; justify-content: flex-start; }
+.ribbon-group { display: flex; align-items: center; gap: 35px; padding-right: 35px; flex: none; }
+.motion-ready .ribbon-track { animation: ribbon-drift 32s linear infinite; }
+.motion-toggle { position: absolute; right: 18px; top: 50%; transform: translateY(-50%); width: 36px; height: 36px; border-radius: 50%; background: var(--cream); border: 1px solid #c9d1bf; color: var(--green); box-shadow: 0 0 0 8px #eeefe5e6; font-size: 14px; }
+.motion-toggle[hidden] { display: none; }
+.motion-ready .floating-note { animation: note-float 6s ease-in-out infinite; }
+.motion-ready .sparkle { animation: sparkle-turn 22s linear infinite; }
+.hero-circle { transform: translate3d(var(--parallax-x, 0px), var(--parallax-y, 0px), 0); transition: transform .6s ease-out; }
+.photo-frame { transform: perspective(1000px) rotateX(var(--tilt-x, 0deg)) rotateY(var(--tilt-y, 0deg)); transition: transform .6s ease-out; }
+.hero-film { display: flex; width: 100%; height: 100%; }
+.hero-shot { position: relative; flex: 0 0 100%; width: 100%; height: 100%; overflow: hidden; }
+.hero-shot img { position: absolute; inset: 0; width: 100%; max-width: none; height: 100%; object-fit: cover; }
+.hero-shot-pair img { left: auto; right: 0; width: 200%; object-position: right center; }
+.hero-film.is-ready { animation: hero-film-drift var(--hero-film-duration, 45s) linear infinite; }
+.photo-frame .photo-label { z-index: 1; pointer-events: none; }
+.service-card { transition: translate .3s, box-shadow .3s, border-color .3s; }
+.service-card:hover, .service-card:focus-within { border-color: #b6c2a8; box-shadow: 0 15px 38px #263e330a; translate: 0 -6px; }
+.service-icon { transition: transform .35s, background .35s; }
+.service-card:hover .service-icon, .service-card:focus-within .service-icon { transform: rotate(-9deg); background: #e1e8d4; }
+.button span, .card-link span, .text-link span { display: inline-block; transition: transform .25s; }
+.button:hover span, .card-link:hover span { transform: translate(3px, -3px); }
+.text-link:hover span { transform: translateY(3px); }
+.back-top { transition: background .25s, color .25s; }
+.back-top:hover { background: var(--green); color: var(--cream); }
+.photo-dialog[open] { animation: dialog-in .25s ease-out; }
+.photo-dialog[open]::backdrop { animation: backdrop-in .25s ease-out; }
+details[open] p { animation: answer-in .3s ease-out; }
+summary span { transition: transform .25s; }
+.gallery-grid { grid-template-columns: 1.2fr 1fr; }
+.comparison-stage { position: relative; width: 100%; aspect-ratio: 1.2; border-radius: var(--radius); overflow: hidden; background: #d9d6ca; isolation: isolate; }
+.comparison-pane { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.comparison-pane img { position: absolute; width: 200%; max-width: none; height: 100%; object-fit: cover; background: transparent; }
+.comparison-after img { right: 0; }
+.comparison-before { clip-path: inset(0 calc(100% - var(--split)) 0 0); }
+.comparison-before img { left: 0; }
+.comparison-label { position: absolute; top: 17px; padding: 9px 13px; border-radius: 25px; background: #f8f6eff0; font-size: 9px; letter-spacing: 1px; pointer-events: none; }
+.before-label { left: 17px; }
+.after-label { right: 17px; }
+.comparison-divider { position: absolute; left: var(--split); top: 0; bottom: 0; width: 2px; background: var(--white); transform: translateX(-50%); pointer-events: none; }
+.comparison-divider>span { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; background: var(--cream); color: var(--ink); box-shadow: 0 2px 16px #0002; font-family: Arial, sans-serif; font-size: 25px; letter-spacing: 4px; padding-left: 4px; }
+.comparison-stage input { appearance: none; -webkit-appearance: none; position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: ew-resize; touch-action: pan-y; }
+.comparison-stage input::-webkit-slider-thumb { appearance: none; -webkit-appearance: none; width: 1px; height: 48px; }
+.comparison-stage input::-moz-range-thumb { width: 1px; height: 48px; border: 0; }
+.comparison-stage:focus-within { outline: 3px solid var(--orange); outline-offset: 5px; }
+.comparison-caption { display: flex; align-items: start; justify-content: space-between; gap: 15px; font-size: 11px; line-height: 1.6; }
+.comparison-caption>span { max-width: 270px; }
+.comparison-full-photo { padding: 0; border: 0; background: none; color: var(--green); white-space: nowrap; font-size: 10px; line-height: 1.8; }
+.comparison-full-photo:hover { color: var(--orange); }
+.gallery-grid figure:not(.gallery-wide) .photo-open { height: auto; aspect-ratio: 1; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
+/* Pausing also stops the entrance animations managed in motion.js. */
+.motion-paused *, .motion-paused *::before, .motion-paused *::after { animation-play-state: paused !important; }
+.motion-paused .photo-dialog, .motion-paused .photo-dialog::backdrop, .motion-paused details p { animation: none !important; }
+.motion-paused .hero-circle { transform: none; }
+.motion-paused .photo-frame { transform: none; }
+@keyframes ribbon-drift { to { transform: translateX(-50%); } }
+@keyframes hero-film-drift { from { transform: translateX(0); } to { transform: translateX(var(--hero-film-end, -500%)); } }
+@keyframes note-float { 0%, 100% { transform: translateY(0) rotate(-7deg); } 50% { transform: translateY(-9px) rotate(-4deg); } }
+@keyframes sparkle-turn { from { transform: rotate(15deg); } to { transform: rotate(195deg); } }
+@keyframes dialog-in { from { opacity: 0; transform: translateY(12px) scale(.98); } to { opacity: 1; transform: none; } }
+@keyframes backdrop-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes answer-in { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: none; } }
+@media (hover: hover) { .service-ribbon:hover .ribbon-track { animation-play-state: paused; } }
+@media (max-width: 760px) {
+  html { scroll-padding-top: 110px; }
+  .header { position: sticky; }
+  .header nav a::after { left: 13px; right: 13px; bottom: 6px; }
+  .ribbon-group { gap: 24px; padding-right: 24px; }
+  .motion-toggle { right: 14px; width: 32px; height: 32px; }
+  .gallery-grid { grid-template-columns: 1fr; }
+  .comparison-stage { aspect-ratio: 1.05; border-radius: 20px; }
+  .comparison-caption { font-size: 10px; gap: 10px; }
+  .comparison-caption>span { max-width: 210px; }
+  .gallery-grid figure:not(.gallery-wide) .photo-open { aspect-ratio: 1.25; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .hero-circle, .photo-frame, .service-card:hover, .service-card:focus-within { transform: none; translate: none; }
+}
